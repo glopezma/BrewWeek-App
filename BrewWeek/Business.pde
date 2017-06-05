@@ -1,25 +1,26 @@
 class Business{
   PVector pos;
-  String name;
-  ArrayList<Beer> beers;
-  int h;
   int prevBusinesses;
   int prevBeers;
-  boolean off = false;
+  String name;
+  boolean off;
+  ArrayList<Beer> beers;
 
 
   //add to list beers.add()
   //get from list beers.get(location);
   //remove from list beers.remove(location);
   //for(Beer beer : beers){beers.display();}
-  Business(String coName){
-    h = 60;
-    pos = new PVector(width/2, h/2);
+  Business(String coName, int prevH, int prevS){
+    pos = new PVector(width/2, /*headerSize + */companySize*prevH + subSize*prevS + companySize/2);
+
+    prevBusinesses = prevH; //Allows it to know where it should go
+    prevBeers = prevS;
+
     name = coName;
+    off = false;
+
     beers = new ArrayList<Beer>();
-    //Temp here, but will become dynamic once I start puting things in
-    prevBusinesses = 0;
-    prevBeers = 0;
   }
 
   void addBeer(String beerName, int prevH, int prevS, boolean t){
@@ -30,29 +31,32 @@ class Business{
   // when the header of the beers (the company) is clicked.
   void toggle(){
     if(!off){
-      if(pos.x - mouseX < width && (pos.y - mouseY < h || mouseY - pos.y < 20) ){
-
+      //only need the y because there aren't any borders, so can't click off screen.
+      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
         off=true;
       }
     }
     else{
-      if(pos.x - mouseX < width && (pos.y - mouseY < h || mouseY - pos.y < 20) ){
+      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
         off=false;
       }
     }
   }
 
   void show(){
-    noStroke();
-    fill(255);
+    stroke(0);
+    strokeWeight(1);
+    fill(255, 255, 255, 90);
     rectMode(CENTER);
-    rect(pos.x, pos.y, width, h);
+    rect(pos.x, pos.y, width, companySize);
 
     //add click to make this show
     fill(0);
     text(name, pos.x, pos.y);
-    for(Beer beer : beers){
-      beer.show();
+    if(!off){
+      for(Beer beer : beers){
+        beer.show();
+      }
     }
   }
 }

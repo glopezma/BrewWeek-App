@@ -21,10 +21,11 @@ public class BrewWeek extends PApplet {
 
 PImage img;
 boolean load = true;
+// int headerSize = 150; //Space to make top piece fit
+int companySize = 60; //size of company list entities
+int subSize = 40;     //size of beers list entities
 int beersTried = 0;
 int totalBeers = 0;
-int companyTotal;
-int beersTotal;
 
 Business b;
 
@@ -44,10 +45,10 @@ public void setup() {
   img.resize(width, height);
 
   //initialize everything
-  b = new Business("Jackie-O\'s Beer CO.");
+  b = new Business("Jackie-O\'s Beer CO.", 0, 0);
 
   //load beers from list
-  b.addBeer("Razz Wheat", 0, false);
+  b.addBeer("Razz Wheat", 1, 0, false);
 
 }
 
@@ -64,63 +65,89 @@ public void draw() {
     background(img);
     b.show();
   }
+}
 
+public void mouseClicked(){
+  b.toggle();
 }
 class Business{
   PVector pos;
-  String name;
-  ArrayList<Beer> beers;
-  int h;
   int prevBusinesses;
   int prevBeers;
+  String name;
+  boolean off;
+  ArrayList<Beer> beers;
 
-  
+
   //add to list beers.add()
   //get from list beers.get(location);
   //remove from list beers.remove(location);
   //for(Beer beer : beers){beers.display();}
-  Business(String coName){
-    h = 60;
-    pos = new PVector(width/2, h/2);
+  Business(String coName, int prevH, int prevS){
+    pos = new PVector(width/2, /*headerSize + */companySize*prevH + subSize*prevS + companySize/2);
+
+    prevBusinesses = prevH; //Allows it to know where it should go
+    prevBeers = prevS;
+
     name = coName;
+    off = false;
+
     beers = new ArrayList<Beer>();
   }
 
-  public void addBeer(String beerName, int num, boolean t){
-    beers.add(new Beer(beerName, num, t));
+  public void addBeer(String beerName, int prevH, int prevS, boolean t){
+    beers.add(new Beer(beerName, prevH, prevS, t));
+  }
+
+  // This function should hide or display the beers listed underneath it
+  // when the header of the beers (the company) is clicked.
+  public void toggle(){
+    if(!off){
+      //only need the y because there aren't any borders, so can't click off screen.
+      print(pos.y);
+      print(mouseY);
+      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
+        off=true;
+      }
+    }
+    else{
+      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
+        off=false;
+      }
+    }
   }
 
   public void show(){
-    noStroke();
-    fill(255);
+    stroke(0);
+    strokeWeight(1);
+    fill(255, 255, 255, 90);
     rectMode(CENTER);
-    rect(pos.x, pos.y, width, h);
+    rect(pos.x, pos.y, width, companySize);
 
     //add click to make this show
     fill(0);
     text(name, pos.x, pos.y);
-    for(Beer beer : beers){
-      beer.show();
+    if(!off){
+      for(Beer beer : beers){
+        beer.show();
+      }
     }
-
   }
 }
 class Beer{
   PVector pos;
   String name;
   boolean tasted;
-  float len;
-  float h;
   int prevBusinesses;
   int prevBeers;
 
-  Beer(String beerName, int num, boolean t){
+  Beer(String beerName, int prevH, int prevS, boolean t){
     //should eventually change this to pput in correct spot
-    pos = new PVector(width/2, height/2);
+    pos = new PVector(width/2, /*headerSize + */companySize*prevH + subSize*prevS + subSize/2 + 1);
     name = beerName;
     tasted = t;
-    len = width;
-    h = 40;
+    prevBusinesses = prevH;
+    prevBeers = prevS;
   }
 
   public void crossOff(){
@@ -131,15 +158,15 @@ class Beer{
     //Make an area to show the name of beer and to click
     //should be white
     rectMode(CENTER);
-    noStroke();
+    // noStroke();
     // fill(66, 229, 244);
-    fill(255);
-    rect(pos.x, pos.y, len, h);
+    fill(255, 255, 255, 90);
+    rect(pos.x, pos.y, width, subSize);
 
     //Make text black
     fill(0);
     textAlign(CENTER);
-    text(name, pos.x, pos.y+2);
+    text(name, pos.x, pos.y);
   }
 }
   public void settings() {  size(600,600); }

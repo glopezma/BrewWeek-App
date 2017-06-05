@@ -5,10 +5,11 @@
 
 PImage img;
 boolean load = true;
+// int headerSize = 150; //Space to make top piece fit
+int companySize = 60; //size of company list entities
+int subSize = 40;     //size of beers list entities
 int beersTried = 0;
 int totalBeers = 0;
-int companyTotal;
-int beersTotal;
 
 Business b;
 
@@ -28,7 +29,7 @@ void setup() {
   img.resize(width, height);
 
   //initialize everything
-  b = new Business("Jackie-O\'s Beer CO.");
+  b = new Business("Jackie-O\'s Beer CO.", 0, 0);
 
   //load beers from list
   b.addBeer("Razz Wheat", 1, 0, false);
@@ -47,7 +48,9 @@ void draw() {
   else{
     background(img);
     b.show();
-    b.toggle();
   }
+}
 
+void mouseClicked(){
+  b.toggle();
 }
