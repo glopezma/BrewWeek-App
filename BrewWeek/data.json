@@ -1,0 +1,40 @@
+
+{"company": [
+  {
+    "name": "Jackie-Os",
+    "beer": "Razz Wheat",
+  },
+  {
+    "name": "Jackie-Os",
+    "beer": "Mystic Mama IPA",
+  },
+  {
+    "name": "Jackie-Os",
+    "beer": "Firefly amber ale",
+  },
+  {
+    "name": "Jackie-Os",
+    "beer": "Chomolungma",
+  },
+  {
+    "name": "Jackie-Os",
+    "beer": "Hop ryot ipa",
+  },
+
+  {
+    "name": "Cat's Den",
+    "beer": "Reaper",
+  },
+  {
+    "name": "Athens Uncorked",
+    "beer": "Ginger Verve",
+  },
+  {
+    "name": "Athens Uncorked",
+    "beer": "Wild Ohio",
+  },
+  {
+    "name": "Buffalo WIld Wings",
+    "beer": "Coffee brwon ale",
+  }
+]}

@@ -3,15 +3,22 @@
 // Email: galopezmatthews@gmail.com
 // Date:  June 4, 2017
 
+// int beersTried = 0;
+// int totalBusinesses = 1;
+// int totalBeers = 5;
 PImage img;
 boolean load = true;
 // int headerSize = 150; //Space to make top piece fit
 int companySize = 60; //size of company list entities
 int subSize = 40;     //size of beers list entities
-int beersTried = 0;
-int totalBeers = 0;
 
-Business b;
+int numHeaders = 0;   //number of headers in program (aka companies)
+int numSubs = 0;      //number of sublist items in program (aka beers)
+
+JSONObject json;
+
+
+ArrayList<Business> b;
 
 
 void testing(){
@@ -22,8 +29,6 @@ void testing(){
 
 void loading(){
   //Load everthing in for the app from a Json fill
-  //https://processing.org/reference/loadJSONArray_.html
-
   load = false;
 }
 
@@ -34,12 +39,27 @@ void setup() {
   size(600,600);
   img.resize(width, height);
 
-  //initialize everything
-  b = new Business("Jackie-O\'s Beer CO.", 0, 0);
+  b = new ArrayList<Business>();
 
-  //load beers from list
-  b.addBeer("Razz Wheat", 1, 0, false);
+  json = loadJSONObject("data.json");
+  JSONArray values = json.getJSONArray("company");
+  String current = "";
+  for(int i = 0; i<values.size(); i++){
+    JSONObject newBeer = values.getJSONObject(i);
+    if(newBeer.getString("name") == current){
+      b.get(numHeaders).addBeer(newBeer.getString("beer"), numHeaders, numSubs, false);
+      numSubs++;
+    }
+    else{
+      b.add(new Business(newBeer.getString("name"), numHeaders, numSubs));
+      numHeaders++;
 
+      b.get(numHeaders-1).addBeer(newBeer.getString("beer"), numHeaders, numSubs, false);
+      numSubs++;
+
+      current = newBeer.getString("name");
+    }
+  }
 }
 
 void draw() {
@@ -53,12 +73,15 @@ void draw() {
   }
   else{
     background(img);
-    b.show();
-
     testing();
+    for(int i = 0; i<b.size(); i++){
+      b.get(i).show();
+    }
   }
 }
 
 void mouseClicked(){
-  b.toggle();
+  for(int i = 0; i<b.size(); i++){
+    b.get(i).toggle();
+  }
 }
