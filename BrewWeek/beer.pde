@@ -30,6 +30,6 @@ class Beer{
     //Make text black
     fill(0);
     textAlign(CENTER);
-    text(name, pos.x, pos.y);
+    text(name, pos.x, pos.y+subSize/4);
   }
 }

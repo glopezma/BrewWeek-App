@@ -14,6 +14,12 @@ int totalBeers = 0;
 Business b;
 
 
+void testing(){
+  //testing
+  // text(mouseY, width/2, height/2);
+  // text(pos.y, width/2, height/2 +40);
+}
+
 void loading(){
   //Load everthing in for the app from a Json fill
   //https://processing.org/reference/loadJSONArray_.html
@@ -48,6 +54,8 @@ void draw() {
   else{
     background(img);
     b.show();
+
+    testing();
   }
 }
 

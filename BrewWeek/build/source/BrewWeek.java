@@ -90,7 +90,7 @@ class Business{
     prevBeers = prevS;
 
     name = coName;
-    off = false;
+    off = true;
 
     beers = new ArrayList<Beer>();
   }
@@ -104,14 +104,12 @@ class Business{
   public void toggle(){
     if(!off){
       //only need the y because there aren't any borders, so can't click off screen.
-      print(pos.y);
-      print(mouseY);
-      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
+      if(pos.y - mouseY > 0 && pos.y - mouseY < companySize/2 || mouseY - pos.y > 0 && mouseY - pos.y < companySize/2){
         off=true;
       }
     }
     else{
-      if(pos.y - mouseY < companySize/2 || mouseY - pos.y < companySize/2){
+      if(pos.y - mouseY > 0 && pos.y - mouseY < companySize/2 || mouseY - pos.y > 0 && mouseY - pos.y < companySize/2){
         off=false;
       }
     }
@@ -126,7 +124,12 @@ class Business{
 
     //add click to make this show
     fill(0);
-    text(name, pos.x, pos.y);
+    text(name, pos.x, pos.y+companySize/4);
+
+    //testing
+    // text(mouseY, width/2, height/2);
+    // text(pos.y, width/2, height/2 +40);
+
     if(!off){
       for(Beer beer : beers){
         beer.show();
@@ -166,7 +169,7 @@ class Beer{
     //Make text black
     fill(0);
     textAlign(CENTER);
-    text(name, pos.x, pos.y);
+    text(name, pos.x, pos.y+subSize/4);
   }
 }
   public void settings() {  size(600,600); }
